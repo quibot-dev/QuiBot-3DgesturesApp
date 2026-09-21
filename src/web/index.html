@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Qui-Bot H₂O</title>
+<style>
+  :root {
+    --fons: #12151c;
+    --carta: #1c212b;
+    --vora: #2d3442;
+    --text: #e8ecf3;
+    --suau: #98a2b3;
+    --accent: #3d7fd6;
+    --perill: #d64545;
+    --ok: #3da35d;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; padding: 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--fons); color: var(--text);
+    max-width: 30rem; margin-inline: auto;
+  }
+  h1 { font-size: 1.25rem; margin: 0 0 .25rem; }
+  .sub { color: var(--suau); font-size: .8rem; margin-bottom: 1rem; }
+
+  .capcalera { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; }
+  .capcalera img { height: 3rem; width: auto; }
+  .capcalera .titol { flex: 1; }
+  .capcalera .titol h1 { margin: 0; }
+  .capcalera .titol .sub { margin: 0; }
+
+  .peu {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.25rem; flex-wrap: wrap;
+    margin-top: 1.5rem; padding-top: 1rem;
+    border-top: 1px solid var(--vora);
+  }
+  .peu img { height: 1.75rem; width: auto; }
+  /* els logos institucionals son foscos: fons clar perque es vegin */
+  .peu img.sobre-clar {
+    background: #fff; padding: .25rem .4rem; border-radius: .25rem;
+  }
+
+  .carta {
+    background: var(--carta); border: 1px solid var(--vora);
+    border-radius: .75rem; padding: .875rem; margin-bottom: .75rem;
+  }
+  .carta h2 {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--suau); margin: 0 0 .625rem; font-weight: 600;
+  }
+
+  button {
+    font: inherit; color: var(--text); background: #262d3a;
+    border: 1px solid var(--vora); border-radius: .5rem;
+    padding: .75rem; cursor: pointer; touch-action: manipulation;
+  }
+  button:active:not(:disabled) { background: var(--accent); }
+  button:disabled { opacity: .35; cursor: not-allowed; }
+
+  /* creu direccional */
+  .creu {
+    display: grid; gap: .5rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: ". amunt ." "esq . dreta" ". avall .";
+  }
+  .creu button { aspect-ratio: 1; font-size: 1.5rem; }
+  #amunt { grid-area: amunt; } #avall { grid-area: avall; }
+  #esq   { grid-area: esq; }   #dreta { grid-area: dreta; }
+
+  .parella { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+
+  #stop {
+    width: 100%; background: var(--perill); border-color: var(--perill);
+    font-weight: 600; padding: .875rem;
+  }
+
+  /* estat */
+  .fila {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: .3rem 0; font-size: .875rem;
+  }
+  .fila + .fila { border-top: 1px solid var(--vora); }
+  .fila span:first-child { color: var(--suau); }
+  .punt {
+    display: inline-block; width: .5rem; height: .5rem;
+    border-radius: 50%; background: var(--suau); margin-right: .4rem;
+  }
+  .punt.actiu { background: var(--ok); }
+  .punt.ocupat { background: var(--accent); }
+
+  .barra {
+    height: .375rem; background: #262d3a; border-radius: 999px;
+    overflow: hidden; margin-top: .25rem;
+  }
+  .barra div { height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+
+  details { margin-top: .25rem; }
+  summary {
+    cursor: pointer; color: var(--suau); font-size: .8rem;
+    padding: .5rem 0; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: "▸ "; }
+  details[open] summary::before { content: "▾ "; }
+
+  input {
+    font: inherit; color: var(--text); background: #262d3a;
+    border: 1px solid var(--vora); border-radius: .5rem;
+    padding: .625rem; width: 100%; letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+  .llegenda { color: var(--suau); font-size: .7rem; margin-top: .375rem; }
+
+  #seq-rec { width: 100%; }
+  #seq-rec.gravant { background: var(--accent); border-color: var(--accent); }
+  .seq-llista {
+    display: flex; flex-wrap: wrap; gap: .3rem; min-height: 1.5rem;
+    margin: .5rem 0; align-items: center;
+  }
+  .seq-llista:empty::before {
+    content: "Prem Gravar i fes servir els controls de dalt";
+    color: var(--suau); font-size: .75rem;
+  }
+  .seq-llista span {
+    background: #262d3a; border: 1px solid var(--vora);
+    border-radius: .375rem; padding: .2rem .5rem; font-size: 1rem;
+  }
+  .jog { margin-top: .75rem; }
+  .jog-titol {
+    font-size: .75rem; color: var(--suau);
+    margin: .625rem 0 .375rem; display: flex; justify-content: space-between;
+  }
+  .jog-titol b { color: var(--text); }
+  .jog-fila { display: grid; grid-template-columns: repeat(5, 1fr); gap: .375rem; }
+  .jog-fila button { padding: .5rem .25rem; font-size: .8rem; }
+
+  #avis {
+    position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%);
+    background: var(--carta); border: 1px solid var(--vora);
+    padding: .5rem .875rem; border-radius: .5rem; font-size: .8rem;
+    opacity: 0; transition: opacity .25s; pointer-events: none;
+  }
+  #avis.mostra { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="capcalera">
+  <img src="/static/logo-quibot.png" alt="Qui-Bot H₂O">
+  <div class="titol">
+    <h1>Qui-Bot H₂O</h1>
+    <div class="sub">Control remot</div>
+  </div>
+</div>
+
+<div class="carta">
+  <h2>Moviment</h2>
+  <div class="creu">
+    <button id="amunt" data-accio="move/forward"  title="Avança una casella">↑</button>
+    <button id="esq"   data-accio="move/left"     title="Gira a l'esquerra">←</button>
+    <button id="dreta" data-accio="move/right"    title="Gira a la dreta">→</button>
+    <button id="avall" data-accio="move/backward" title="Retrocedeix">↓</button>
+  </div>
+</div>
+
+<div class="carta">
+  <h2>Xeringa</h2>
+  <div class="parella">
+    <button data-accio="syringe/take">Xuclar</button>
+    <button data-accio="syringe/leave">Buidar</button>
+  </div>
+</div>
+
+<div class="carta">
+  <h2>Seqüència</h2>
+  <button id="seq-rec">Gravar seqüència</button>
+  <div id="seq-llista" class="seq-llista"></div>
+  <div class="parella" id="seq-controls" hidden>
+    <button id="seq-run">Executar</button>
+    <button id="seq-undo">Esborrar l'última</button>
+  </div>
+  <button id="seq-stop" hidden style="width:100%;margin-top:.5rem">Cancel·lar</button>
+  <div id="seq-estat" class="llegenda"></div>
+</div>
+
+<div class="carta">
+  <button id="stop">ATURAR</button>
+  <div id="interromput" hidden>
+    <div class="llegenda" style="margin-top:.625rem">
+      S'ha aturat <b id="int-nom"></b> a mitges.
+      <b>Continuar</b> la reprèn des d'on era. Si has mogut el robot de lloc,
+      fes servir <b>Descartar</b>: quedarà entre dos vèrtexs, i abans de girar
+      convé avançar o retrocedir.
+    </div>
+    <div class="parella" style="margin-top:.5rem">
+      <button id="int-repetir">Continuar</button>
+      <button id="int-descartar">Descartar</button>
+    </div>
+  </div>
+</div>
+
+<div class="carta">
+  <h2>Estat</h2>
+  <div class="fila">
+    <span>Robot</span>
+    <span><i class="punt" id="p-estat"></i><b id="v-estat">—</b></span>
+  </div>
+  <div class="fila">
+    <span>Mode</span>
+    <span><b id="v-mode">—</b></span>
+  </div>
+  <div class="fila">
+    <span>Recipient al davant</span>
+    <span><b id="v-recipient">—</b></span>
+  </div>
+  <div class="fila">
+    <span>Xeringa</span>
+    <span><b id="v-xeringa">—</b></span>
+  </div>
+  <div class="fila">
+    <span>Última acció</span>
+    <span><b id="v-ultima">—</b></span>
+  </div>
+</div>
+
+<div class="carta">
+  <h2>Mode</h2>
+  <div class="parella">
+    <button data-mode="gestos">Gestos</button>
+    <button data-mode="blocs">Blocs</button>
+  </div>
+</div>
+
+<div class="carta">
+  <details>
+    <summary>Avançat</summary>
+    <div class="parella" style="margin-top:.5rem">
+      <button data-accio="calibrate/arms">Calibrar braços</button>
+      <button data-accio="calibrate/syringe">Calibrar xeringa</button>
+    </div>
+
+    <div class="jog">
+      <div class="jog-titol">Braços <b id="j-bracos">—</b></div>
+      <div class="jog-fila">
+        <button data-jog="arms" data-p="-50">−50</button>
+        <button data-jog="arms" data-p="-10">−10</button>
+        <button data-jog="arms" data-p="10">+10</button>
+        <button data-jog="arms" data-p="50">+50</button>
+        <button data-zero="arms" title="Fixa aquesta posició com a zero">0</button>
+      </div>
+
+      <div class="jog-titol">Xeringa <b id="j-xeringa">—</b></div>
+      <div class="jog-fila">
+        <button data-jog="syringe" data-p="-200">−200</button>
+        <button data-jog="syringe" data-p="-50">−50</button>
+        <button data-jog="syringe" data-p="50">+50</button>
+        <button data-jog="syringe" data-p="200">+200</button>
+        <button data-zero="syringe" title="Fixa aquesta posició com a zero">0</button>
+      </div>
+    </div>
+    <button id="poweroff" style="width:100%;margin-top:.5rem;color:var(--perill)">
+      Apagar el robot
+    </button>
+  </details>
+</div>
+
+<div id="avis"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+let ocupat = false;
+let descartat = false;
+
+function avis(text) {
+  const a = $("#avis");
+  a.textContent = text;
+  a.classList.add("mostra");
+  clearTimeout(a._t);
+  a._t = setTimeout(() => a.classList.remove("mostra"), 2200);
+}
+
+async function post(ruta, cos) {
+  try {
+    const r = await fetch("/api/" + ruta, {
+      method: "POST",
+      headers: cos ? {"Content-Type": "application/json"} : {},
+      body: cos ? JSON.stringify(cos) : null,
+    });
+    const d = await r.json();
+    if (!r.ok) avis(d.error || "Error");
+    return d;
+  } catch (e) {
+    avis("Sense connexió amb el robot");
+    return null;
+  }
+}
+
+// accions
+document.querySelectorAll("[data-accio]").forEach(b => {
+  b.onclick = () => {
+    const lletra = LLETRA[b.dataset.accio];
+    if (gravant && lletra) {       // gravant: s'apunta en lloc d'executar-se
+      gravades.push(lletra);
+      pintaSeq();
+      return;
+    }
+    post(b.dataset.accio);
+  };
+});
+
+document.querySelectorAll("[data-mode]").forEach(b => {
+  b.onclick = async () => {
+    const d = await post("mode", {mode: b.dataset.mode});
+    if (d && d.mode) avis("Mode " + d.mode);
+  };
+});
+
+$("#stop").onclick = () => { post("stop"); avis("Aturat"); };
+
+// acció interrompuda
+$("#int-repetir").onclick = async () => {
+  const d = await post("resume");
+  if (d && d.accepted) avis("Continuant…");
+};
+$("#int-descartar").onclick = () => {
+  $("#interromput").hidden = true;
+  descartat = true;
+};
+
+// seqüències: es graven amb els mateixos controls de dalt
+const LLETRA = {
+  "move/forward": "A", "move/right": "D", "move/left": "E",
+  "move/backward": "R", "syringe/take": "X", "syringe/leave": "B",
+};
+const ICONA = {A: "↑", D: "→", E: "←", R: "↓", X: "Xuclar", B: "Buidar"};
+
+let gravant = false;
+let gravades = [];
+
+function pintaSeq() {
+  $("#seq-llista").innerHTML =
+    gravades.map(c => `<span>${ICONA[c]}</span>`).join("");
+  $("#seq-controls").hidden = gravades.length === 0;
+}
+
+$("#seq-rec").onclick = () => {
+  gravant = !gravant;
+  $("#seq-rec").classList.toggle("gravant", gravant);
+  $("#seq-rec").textContent = gravant ? "Gravant… (prem per acabar)"
+                                      : "Gravar seqüència";
+  if (gravant) { gravades = []; pintaSeq(); avis("Fes servir els controls"); }
+};
+
+$("#seq-undo").onclick = () => { gravades.pop(); pintaSeq(); };
+
+$("#seq-run").onclick = async () => {
+  if (!gravades.length) return;
+  if (gravant) $("#seq-rec").click();
+  const d = await post("sequence", {ordres: gravades.join("")});
+  if (d && d.accepted) avis(d.ordres.length + " ordres");
+};
+
+$("#seq-stop").onclick = () => { post("sequence/stop"); avis("Cancel·lant…"); };
+
+// moviment manual
+document.querySelectorAll("[data-jog]").forEach(b => {
+  b.onclick = () => post("jog/" + b.dataset.jog, {passos: +b.dataset.p});
+});
+document.querySelectorAll("[data-zero]").forEach(b => {
+  b.onclick = async () => {
+    await post("jog/zero", {quin: b.dataset.zero});
+    avis("Zero fixat");
+  };
+});
+
+$("#poweroff").onclick = () => {
+  if (confirm("Segur que vols apagar el robot?")) {
+    post("poweroff");
+    avis("Apagant…");
+  }
+};
+
+// estat, un cop per segon: prou per a la interfície i no carrega la Raspberry,
+// que és d'un sol nucli i té el generador de polsos consumint CPU.
+async function actualitza() {
+  try {
+    const r = await fetch("/api/status");
+    const d = await r.json();
+
+    ocupat = d.ocupat;
+    $("#p-estat").className = "punt " + (d.ocupat ? "ocupat" : "actiu");
+    $("#v-estat").textContent = d.ocupat ? "En moviment" : "Preparat";
+    $("#v-mode").textContent = d.mode;
+    $("#v-recipient").textContent =
+      d.davant_recipient ? "Sí, al davant" : (d.recipient ? "Sí" : "No");
+
+    $("#v-xeringa").textContent =
+      d.xeringa > d.xeringa_max / 2 ? "Plena" : "Buida";
+
+    if (d.interrompuda && !descartat) {
+      $("#int-nom").textContent = d.interrompuda;
+      $("#interromput").hidden = false;
+    } else {
+      $("#interromput").hidden = true;
+    }
+    if (!d.interrompuda) descartat = false;
+
+    const u = d.ultima_accio;
+    $("#v-ultima").textContent =
+      u && u.name !== "cap" ? (u.ok ? u.name : u.name + " ✕") : "—";
+
+    $("#j-bracos").textContent = d.bracos;
+    $("#j-xeringa").textContent = d.xeringa;
+
+    const s = d.sequencia;
+    const enMarxa = s && s.executant;
+    $("#seq-estat").textContent = enMarxa
+      ? `Executant ${s.index + 1}/${s.total}: ` +
+        s.ordres.map(c => ICONA[c]).join(" ")
+      : "";
+    $("#seq-stop").hidden = !enMarxa;
+
+    // gravant, els botons han de continuar actius encara que el robot es mogui
+    const bloqueja = (d.ocupat || enMarxa) && !gravant;
+    document.querySelectorAll("[data-accio],[data-jog],#seq-run")
+      .forEach(b => b.disabled = bloqueja);
+  } catch (e) {
+    $("#p-estat").className = "punt";
+    $("#v-estat").textContent = "Sense connexió";
+  }
+}
+
+actualitza();
+setInterval(actualitza, 1000);
+</script>
+
+<footer class="peu">
+  <img class="sobre-clar" src="/static/logo-upc.jpg" alt="Universitat Politècnica de Catalunya">
+  <img src="/static/logo-quibot.png" alt="Qui-Bot H₂O">
+  <img class="sobre-clar" src="/static/logo-igualtat.png" alt="Generalitat de Catalunya. Departament d'Igualtat i Feminisme">
+</footer>
+</body>
+</html>

@@ -1,0 +1,4 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "Arandano_lib") (type "KiCad") (uri "${KIPRJMOD}/Arandano_lib.pretty") (options "") (descr ""))
+)
