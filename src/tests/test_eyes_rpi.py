@@ -1,3 +1,13 @@
+# Copyright (C) 2026 Pau Anguera Comas
+#
+# Aquest programa és programari lliure: podeu redistribuir-lo i/o
+# modificar-lo sota els termes de la Llicència Pública General de GNU
+# publicada per la Free Software Foundation, en la versió 3.
+#
+# Es distribueix amb l'esperança que sigui útil, però SENSE CAP GARANTIA.
+# Vegeu la Llicència Pública General de GNU per a més detalls.
+# <https://www.gnu.org/licenses/>
+
 """
 test_eyes_rpi.py — Test autonom dels ulls WS2811 amb rpi_ws281x (GPIO13, PWM1).
 
