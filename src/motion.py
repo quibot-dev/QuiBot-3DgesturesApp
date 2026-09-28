@@ -386,13 +386,12 @@ ADS_DATA_RATE = 860
 # resolució de sobres (a 150 mm/s són ~20 mm entre lectures).
 DIST_CHECK_EVERY = 5
 
-# ⚠️ TEMPORAL (2026-08-28): detecció d'objectes DESACTIVADA al seguidor de línia.
-# A la primera prova al taulell el robot es va aturar per un fals positiu del
-# VL53L0X (OBJECT amb res al davant) abans d'arribar a cap cruïlla. Mentre no
-# s'esbrini, follow_line_loop() no retorna mai OBJECT i el seguidor només mira
-# cruïlles. La distància se segueix mesurant i registrant (lf_last_dist), així
-# que els CSV de les proves permetran veure quan i amb quin valor passa.
-# Tornar a posar True quan estigui resolt: el mode de vasos ho necessita.
+# Detecció d'objectes durant el seguiment de línia. Va estar desactivada un
+# temps: a les primeres proves al taulell el robot s'aturava per falsos
+# positius del VL53L0X (OBJECT sense res al davant) abans d'arribar a cap
+# cruïlla. La causa era el crosstalk dins l'allotjament del sensor, resolt
+# engrandint-ne el forat, i la parada davant del recipient ja no depèn de la
+# detecció sinó dels passos comptats (MM_TO_OBJECT).
 DETECT_OBJECT = True
 
 
