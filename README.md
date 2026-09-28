@@ -18,11 +18,11 @@ Admet tres vies de control:
 
 | Directori | Contingut |
 |---|---|
-| `3D/` | Peces en STL, captures amb l'orientació d'impressió de cadascuna i els paràmetres de cada perfil |
+| `3D/` | Peces en STL, fitxers de disseny, model del conjunt en FreeCAD, captures amb l'orientació d'impressió i els paràmetres de cada perfil |
 | `PCB/` | Projecte KiCad, fitxers de fabricació en Gerber, esquema elèctric i vista 3D |
 | `src/` | Programa de control, servidor web i programes de verificació |
 | `doc/` | Llista de material i memòria del treball |
-| `User_manual/` | Guia d'ús del robot per a tallers |
+| `User_manual/` | Guia d'ús del robot per a tallers i vídeo de demostració |
 
 La **guia de muntatge**, de trenta-set passos, és l'annex A de la memòria.
 
