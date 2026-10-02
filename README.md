@@ -1,4 +1,7 @@
 # Qui-Bot H₂O
+Documentació oficial i codi del Projecte QuiBot (UPC).
+
+🌐 **Lloc web del projecte:** [https://quibot.upc.edu]
 
 Robot humanoide educatiu que introdueix la programació seqüencial i la química
 a infants de primària. Es mou per un tauler de joc amb línies negres, seguint
@@ -110,3 +113,15 @@ d'aquest treball.
 Totes tres són recíproques: permeten usar, modificar i redistribuir el
 material amb la condició que les obres derivades es publiquin en les mateixes
 condicions.
+
+> 📢 **Aviseu-nos si feu servir o adapteu aquest material!**  
+> Si teniu pensat replicar el projecte, utilitzar aquest material en la vostra recerca o desenvolupar una versió derivada, us agrairem molt que ens ho feu saber enviant un correu a [quibot@upc.edu](mailto:quibot@upc.edu) o obrint una *Issue* en aquest repositori. Això ens ajuda a fer el seguiment de l'impacte del projecte i a justificar el finançament rebut.
+
+---
+
+## 👥 Autors, Equip i Agraïments
+
+* **Investigadors Principals:** Marta Tarrés i Toni Dorado — Grup de Recerca RISS, Universitat Politècnica de Catalunya (UPC).
+* **Desenvolupament i Integració (TFG/TFM):** Pau Anguera Comas 
+* **Finançament:** Projecte finançat pel Departament d'Igualtat i Feminismes de la Generalitat de Catalunya (`IFE038/24/000087`).
+
