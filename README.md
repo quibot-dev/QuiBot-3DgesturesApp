@@ -125,3 +125,9 @@ condicions.
 * **Desenvolupament i Integració (TFG/TFM):** Pau Anguera Comas 
 * **Finançament:** Projecte finançat pel Departament d'Igualtat i Feminismes de la Generalitat de Catalunya (`IFE038/24/000087`).
 
+* ## ⚠️ Avís Legal, Seguretat i Suport
+
+* **Exempció de responsabilitat:** Aquest repositori i tots els seus materials es proporcionen "tal com són" (*AS IS*), amb fins exclusivament docents i de recerca. Els autors i la Universitat Politècnica de Catalunya (UPC) no assumeixen cap responsabilitat per danys directes, indirectes o derivats de la fabricació, muntatge, manipulació o ús dels dissenys, circuits o codis d'aquest projecte.
+* **Seguretat mecatrònica:** El dispositiu conté components elèctrics i elements mecànics en moviment. Cal prendre les precaucions de seguretat adients durant la seva manipulació i alimentació elèctrica.
+* **Atenció i suport tècnic:** Aquest projecte es manté exclusivament en el marc de les activitats de recerca del grup RISS. L'equip investigador no assumeix cap compromís d'oferir assistència tècnica, suport personalitzat o resolució de peticions a tercers usuaris.
+
