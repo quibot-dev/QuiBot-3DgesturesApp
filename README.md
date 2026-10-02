@@ -115,7 +115,7 @@ material amb la condició que les obres derivades es publiquin en les mateixes
 condicions.
 
 > 📢 **Aviseu-nos si feu servir o adapteu aquest material!**  
-> Si teniu pensat replicar el projecte, utilitzar aquest material en la vostra recerca o desenvolupar una versió derivada, us agrairem molt que ens ho feu saber enviant un correu a [quibot@upc.edu](mailto:quibot@upc.edu) o obrint una *Issue* en aquest repositori. Això ens ajuda a fer el seguiment de l'impacte del projecte i a justificar el finançament rebut.
+> Si teniu pensat replicar el projecte, utilitzar aquest material en la vostra recerca o desenvolupar una versió derivada, us agrairem molt que ens ho feu saber enviant un correu a [quibot@upc.edu](mailto:quibot@upc.edu) o obrint una *Issue* en aquest repositori. Això ens ajuda a fer el seguiment de l'impacte del projecte.
 
 ---
 
